@@ -17,7 +17,7 @@ def decorator(output_file, interval=0.001):
 
             thread.start()
             try:
-                fn(*args, **kwargs)
+                return fn(*args, **kwargs)
             finally:
                 thread.stop()
                 thread.join()
