@@ -8,6 +8,25 @@ import threading
 import traceback
 import collections
 
+
+def decorator(output_file, interval=0.001):
+
+    def outer(fn):
+        def wrapper(*args, **kwargs):
+            thread = ProfileThread(open(output_file, 'w'), interval)
+
+            thread.start()
+            try:
+                fn(*args, **kwargs)
+            finally:
+                thread.stop()
+                thread.join()
+
+        return wrapper
+
+    return outer
+
+
 def get_thread_name(ident):
   for th in threading.enumerate():
     if th.ident == ident:
